@@ -27,11 +27,12 @@ const LoginContainer = (props: Props) => {
   const signInWithGoogle = async () => {
     setDisabled(true);
     try {
-      const result = await signInWithPopup(auth, Providers.google);
-      const user = result.user;
-      if (user.displayName) {
-        setFirstName(user.displayName?.split(' ')[0]);
-        setLastName(user.displayName.split(' ')[1]);
+      await signInWithPopup(auth, Providers.google);
+      const idToken = await auth.currentUser?.getIdToken();
+      const userInfo: any = await getUserInfo(idToken);
+      if (userInfo.data.firstName || userInfo.data.lastName) {
+        setFirstName(userInfo.data.firstName);
+        setLastName(userInfo.data.lastName);
       }
       setDisabled(false);
       navigate("/");
