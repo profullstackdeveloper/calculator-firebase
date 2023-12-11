@@ -41,14 +41,14 @@ And convert the result to the target currency with the latest exchange rate.
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 
-* Node.js
-* React
-* Firebase
-* Firestore
-* Typescript
-* Material UI
-* Styled-components
-* Tailwind CSS
+* <b>Node.js</b>
+* <b>React</b>
+* <b>Firebase</b>
+* <b>Firestore</b>
+* <b>Typescript</b>
+* <b>Material UI</b>
+* <b>Styled-components</b>
+* <b>Tailwind CSS</b>
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
