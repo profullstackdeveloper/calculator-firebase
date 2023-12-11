@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, Providers } from "../../config/firebase";
 import { Box, Button, Divider, Stack, TextField, Typography } from "@mui/material";
@@ -7,7 +7,6 @@ import GoogleIcon from "@mui/icons-material/Google";
 import EmailIcon from "@mui/icons-material/Email";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import KeyIcon from '@mui/icons-material/Key';
-import axios from "axios";
 import { UserContext } from "../../context/userContext";
 import { getUserInfo } from "../../api";
 

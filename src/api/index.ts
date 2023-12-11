@@ -1,8 +1,10 @@
 import axios from "axios"
 
+const baseURL = process.env.REACT_APP_BASEAPIURL;
+
 export const getUserInfo = async (bearerToken: string = "") => {
     try {
-        const result = await axios.get('http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/signin', {
+        const result = await axios.get(`${baseURL}/calculation/signin`, {
             headers: {
                 'Authorization': `Bearer ${bearerToken}`,
             }
@@ -16,7 +18,7 @@ export const getUserInfo = async (bearerToken: string = "") => {
 
 export const registerUser = async (email: string, firstName: string, lastName: string) => {
     try {
-        await axios.post('http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/signup', {
+        await axios.post(`${baseURL}/calculation/signup`, {
             email: email,
             firstName,
             lastName
@@ -27,7 +29,7 @@ export const registerUser = async (email: string, firstName: string, lastName: s
 }
 
 export const getHistoryForUser = async (bearerToken: string = "") => {
-    const result = await axios.get('http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/history', {
+    const result = await axios.get(`${baseURL}/calculation/history`, {
         headers: {
             'Authorization': `Bearer ${bearerToken}`,
         }
@@ -37,7 +39,7 @@ export const getHistoryForUser = async (bearerToken: string = "") => {
 }
 
 export const removeHistoryById = async (id: string, bearerToken: string) => {
-    const result = await axios.delete(`http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/history/${id}`, {
+    const result = await axios.delete(`${baseURL}/calculation/history/${id}`, {
         headers: {
             'Authorization': `Bearer ${bearerToken}`,
         }
@@ -47,7 +49,7 @@ export const removeHistoryById = async (id: string, bearerToken: string) => {
 }
 
 export const addAPI = async (first: number, second: number, idToken: string) => {
-    const result = await axios.post('http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/add', {
+    const result = await axios.post(`${baseURL}/calculation/add`, {
         first,
         second,
     }, {
@@ -60,7 +62,7 @@ export const addAPI = async (first: number, second: number, idToken: string) => 
 }
 
 export const divideAPI = async (first: number, second: number, idToken: string) => {
-    const result = await axios.post('http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/divide', {
+    const result = await axios.post(`${baseURL}/calculation/divide`, {
         first,
         second,
     }, {
@@ -73,7 +75,7 @@ export const divideAPI = async (first: number, second: number, idToken: string) 
 }
 
 export const multiplyAPI = async (first: number, second: number, idToken: string) => {
-    const result = await axios.post('http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/multiply', {
+    const result = await axios.post(`${baseURL}/calculation/multiply`, {
         first,
         second,
     }, {
@@ -86,7 +88,7 @@ export const multiplyAPI = async (first: number, second: number, idToken: string
 }
 
 export const deductionAPI = async (first: number, second: number, idToken: string) => {
-    const result = await axios.post('http://195.20.236.32:5001/calculator-49ac2/us-central1/calculation/deduction', {
+    const result = await axios.post(`${baseURL}/calculation/deduction`, {
         first,
         second,
     }, {

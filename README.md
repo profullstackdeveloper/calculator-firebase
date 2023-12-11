@@ -24,6 +24,29 @@
 </ul>
 </ul>
 </li>
+<li>
+<a href="#about-api">About API</a>
+</li>
+<ul>
+<li>
+<a href="#calculation">Calculation</a>
+<ul>
+<li><a href="#add">Add</a></li>
+<li><a href="#deduction">Deduction</a></li>
+<li><a href="#multiply">Multiply</a></li>
+<li><a href="#divide">Divide</a></li>
+</ul>
+</li>
+<li>
+<a href="#calculation">History</a>
+<ul>
+<li><a href="#add-history">Add History</a></li>
+<li><a href="#delete-history">Delete History</a></li>
+<li><a href="#get-history">Get History</a></li>
+</ul>
+</li>
+
+</ul>
 </ol>
 </details>
 
@@ -34,7 +57,7 @@ And convert the result to the target currency with the latest exchange rate.
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
 
-## Built With
+### Built With
 
 
 
@@ -52,11 +75,11 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-## Getting Started
+### Getting Started
 
 To install and run the project successfully, please follow the instructions.
 
-### Environment
+#### Environment
 ```
 Node version >= 18.0
 Firebase Tools(firebase-tools) version 13.0.0
@@ -75,7 +98,7 @@ Firebase emulator is using Java to run it.
 ```
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-### Prerequisites
+#### Prerequisites
 
 This project is using ``Firebase`` and ``Firestore``.
 Before using this, please follow these steps:
@@ -88,7 +111,7 @@ For more information please check this [link]('https://firebase.google.com/docs/
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-### Installation
+#### Installation
 
 ```bash
 git clone https://github.com/profullstackdeveloper/calculator-firebase.git
@@ -110,9 +133,9 @@ After finishing installation of required modules, then please be sure that env f
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-## Usage
+### Usage
 
-### Script Details
+#### Script Details
 
 At first, please run the cloud functions at first. (for local test case)
 
@@ -133,3 +156,125 @@ cd functions
 npm run build
 npm run deploy
 ```
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+## About API
+
+### Calculation
+
+This is the list of API endpoints for calculation:
+
+#### Add
+```js
+POST {baseURL}/calculation/add
+
+RequestBody: 
+{
+    first: number,
+    second: number
+}
+
+Response:
+{
+    result: number
+}
+```
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+#### Deduction
+```js
+POST {baseURL}/calculation/deduction
+
+RequestBody: 
+{
+    first: number,
+    second: number
+}
+
+Response:
+{
+    result: number
+}
+```
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+#### Multiply
+```js
+POST {baseURL}/calculation/multiply
+
+RequestBody: 
+{
+    first: number,
+    second: number
+}
+
+Response:
+{
+    result: number
+}
+```
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+#### Divide
+
+```js
+POST {baseURL}/calculation/divide
+
+RequestBody: 
+{
+    first: number,
+    second: number
+}
+
+Response:
+{
+    result: number
+}
+```
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+### History
+
+This is the list of the API endpoints for calculation history.
+
+#### Add History
+
+Once each calculation is handled, then they will add their calculation information to the database.
+
+#### Get History
+
+```js
+GET {baseURL}/calculation/history
+
+Request Header: Bearer Token
+
+Response: 
+{
+    first: number,
+    second: number,
+    operator: string,
+    result: number,
+    createdAt: string
+}
+```
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
+
+### Delete History
+
+```js
+DELETE {baseURL}/calculation/history/{historyId}
+
+Request Header: Bearer Token
+
+Response: 
+{
+    result: boolean
+}
+```
+
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
