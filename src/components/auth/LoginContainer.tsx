@@ -26,11 +26,8 @@ const LoginContainer = (props: Props) => {
     setDisabled(true);
     try {
       const result = await signInWithPopup(auth, Providers.google);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
       const user = result.user;
-      console.log('user is ', user);
       if(user.displayName) {
-        console.log('displayName is ', user.displayName);
         setFirstName(user.displayName?.split(' ')[0]);
         setLastName(user.displayName.split(' ')[1]);
       }
@@ -48,7 +45,6 @@ const LoginContainer = (props: Props) => {
       await signInWithEmailAndPassword(auth, email, password);
       const idToken = await auth.currentUser?.getIdToken();
       const userInfo: any = await getUserInfo(idToken);
-      console.log('credential is ', userInfo);
       if(userInfo.data.firstName || userInfo.data.lastName) {
         setFirstName(userInfo.data.firstName);
         setLastName(userInfo.data.lastName);

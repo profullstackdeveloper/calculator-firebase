@@ -29,15 +29,12 @@ const RegisterContainer = (props: Props) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-      console.log('user is ', user.displayName);
       const firstName = user.displayName?.split(' ')[0];
       const lastName = user.displayName?.split(' ')[1];
-      console.log('token is ', token);
 
       await registerUser(user.email ?? "", firstName ?? "", lastName ?? "");
 
       setDisabled(false);
-      console.info('TODO: navigate to authenticated screen');
       navigate("/");
     } catch (err: any) {
       setErrorMessage(err.code + ': ' + err.message);
@@ -50,7 +47,6 @@ const RegisterContainer = (props: Props) => {
     try {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       const credential = result.user;
-      console.log('user credential is ', credential);
       await registerUser(email ?? "", firstName ?? "", lastName ?? "");
       setDisabled(false);
       sendEmailVerification(credential)

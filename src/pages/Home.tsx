@@ -130,7 +130,6 @@ export default function Home({ }: Props) {
   const handleCalc = async () => {
     let result;
     const idToken = await auth.currentUser?.getIdToken();
-    console.log(auth.currentUser?.providerData)
     switch (op) {
       case "+":
         result = await addAPI(first, second, idToken ?? "");
