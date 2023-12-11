@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { HeaderContainer } from './Header.style';
 import { Avatar, Button, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from '../../context/userContext';
 
 export default function Header() {
 
@@ -13,8 +14,10 @@ export default function Header() {
     const navigate = useNavigate();
     const params = useLocation();
 
+    const { firstName, lastName, setFirstName, setLastName } = useContext(UserContext);
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        if(params.pathname !== "/login") {
+        if (params.pathname !== "/login") {
             setAnchorE1(event.currentTarget);
         }
     }
@@ -28,6 +31,9 @@ export default function Header() {
             await signOut(auth);
             navigate('/login')
             setAnchorE1(null);
+            setFirstName('');
+            setLastName('');
+            
         } catch (err: any) {
             console.error(err);
             setAnchorE1(null);
@@ -37,9 +43,14 @@ export default function Header() {
     return (
         <HeaderContainer>
             <Typography fontFamily={'inherit'} fontSize={'2rem'}>Currency Converter</Typography>
-            <Button onClick={handleClick}>
-                <Avatar></Avatar>
-            </Button>
+            <div>
+                {
+                    firstName + ' ' + lastName
+                }
+                <Button onClick={handleClick}>
+                    <Avatar></Avatar>
+                </Button>
+            </div>
             {
                 params.pathname !== "/login" && <Menu
                     anchorEl={anchorE1}

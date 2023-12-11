@@ -3,7 +3,6 @@ import { SidebarContainer } from './Sidebar.style';
 import { Divider, Fab, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
 import CalculateIcon from '@mui/icons-material/Calculate';
-import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -24,7 +23,6 @@ export default function Sidebar() {
     const [fold, setFold] = useState(false);
     const navigate = useNavigate();
     const handleListItemClick = (
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
         index: number,
         path: string
     ) => {
@@ -41,7 +39,7 @@ export default function Sidebar() {
             <List component={"nav"}>
                 <ListItemButton
                     selected={selectedIndex === 0}
-                    onClick={(e) => handleListItemClick(e, 0, "/history")}
+                    onClick={() => handleListItemClick(0, "/history")}
                 >
                     <ListItemIcon>
                         <HistoryIcon />
@@ -51,7 +49,7 @@ export default function Sidebar() {
                 <Divider />
                 <ListItemButton
                     selected={selectedIndex === 1}
-                    onClick={(e) => handleListItemClick(e, 1, "/")}
+                    onClick={() => handleListItemClick(1, "/")}
                 >
                     <ListItemIcon>
                         <CalculateIcon />

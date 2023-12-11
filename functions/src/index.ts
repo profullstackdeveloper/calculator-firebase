@@ -1,50 +1,33 @@
-import { onRequest } from "firebase-functions/v2/https";
+import {onRequest} from "firebase-functions/v2/https";
 // import * as logger from "firebase-functions/logger";
 // import { onDocumentCreated } from 'firebase-functions/v2/https';
-import { initializeApp } from "firebase-admin/app";
-import { getFirestore } from 'firebase-admin/firestore';
+// import {initializeApp} from "firebase-admin/app";
+import {config} from 'dotenv'
 
+import * as express from 'express';
+import { authentication } from "./middleware";
+import { addController, deductionController, dividerController, multiplyController } from "./controller/calculation.controller";
+import { deleteHistoryForUser, getHistoryByUser } from "./controller/history.controller";
+import { getUserByToken, signUp } from "./controller/user.controller";
 
+config();
 
+const app = express();
 
-export const add = onRequest(async (request, response) => {
-    const {first, second, from, to, rate}: any = request.body;
-    console.log('from is ', from);
-    console.log('to is ', to);
-    console.log('rate is ', rate);
-    response.json({
-        result: Number(first + second)
-    });
-});
+app.post('/add', authentication, addController);
 
-export const deduction = onRequest(async (request, response) => {
-    const {first, second, from, to, rate}: any = request.body;
-    console.log('from is ', from);
-    console.log('to is ', to);
-    console.log('rate is ', rate);
-    response.json({
-        result: Number(first - second)
-    })
-});
+app.post('/deduction', authentication, deductionController);
 
-export const multiply = onRequest(async (request, response) => {
-    const {first, second, from, to, rate}: any = request.body;
-    console.log('from is ', from);
-    console.log('to is ', to);
-    console.log('rate is ', rate);
-    response.json({
-        result: Number(first * second)
-    })
-})
+app.post('/multiply', authentication, multiplyController);
 
-export const divide = onRequest(async (request, response) => {
-    const {first, second, from, to, rate}: any = request.body;
-    console.log('from is ', from);
-    console.log('to is ', to);
-    console.log('rate is ', rate);
-    response.json({
-        result: Number(first / second)
-    })
-})
+app.post('/divide', authentication, dividerController);
 
-initializeApp();
+app.get('/history', authentication, getHistoryByUser);
+
+app.delete('/history/:id', authentication, deleteHistoryForUser);
+
+app.get('/signin', authentication, getUserByToken);
+
+app.post('/signup', signUp)
+
+export const calculation = onRequest(app);

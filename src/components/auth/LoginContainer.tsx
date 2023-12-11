@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, Providers } from "../../config/firebase";
-import { Button, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import EmailIcon from "@mui/icons-material/Email";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import KeyIcon from '@mui/icons-material/Key';
+import axios from "axios";
+import { UserContext } from "../../context/userContext";
 
 interface Props { }
 
@@ -15,17 +19,21 @@ const LoginContainer = (props: Props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { setFirstName, setLastName } = useContext(UserContext);
+
   const signInWithGoogle = async () => {
     setDisabled(true);
     try {
       const result = await signInWithPopup(auth, Providers.google);
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential?.accessToken;
       const user = result.user;
       console.log('user is ', user);
-      console.log('token is ', token);
+      if(user.displayName) {
+        console.log('displayName is ', user.displayName);
+        setFirstName(user.displayName?.split(' ')[0]);
+        setLastName(user.displayName.split(' ')[1]);
+      }
       setDisabled(false);
-      console.info('TODO: navigate to authenticated screen');
       navigate("/");
     } catch (err: any) {
       setErrorMessage(err.code + ': ' + err.message);
@@ -36,9 +44,19 @@ const LoginContainer = (props: Props) => {
   const signinWithEmail = async () => {
     setDisabled(true);
     try {
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      const credential = result.user;
-      console.log('user credential is ', credential);
+      await signInWithEmailAndPassword(auth, email, password);
+      const idToken = await auth.currentUser?.getIdToken();
+      const userInfo = await axios.get('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/signin', {
+        headers: {
+          'Authorization': `Bearer ${idToken}`,
+        }
+      })
+      console.log('credential is ', userInfo);
+      if(userInfo.data.firstName || userInfo.data.lastName) {
+        setFirstName(userInfo.data.firstName);
+        setLastName(userInfo.data.lastName);
+      }
+      navigate("/")
     } catch (err: any) {
       setErrorMessage(err.code + ': ' + err.message);
       setDisabled(false);
@@ -47,13 +65,23 @@ const LoginContainer = (props: Props) => {
 
   return (
     <Stack>
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+        <TextField label="Email" variant="standard" value={email} onChange={(e) => setEmail(e.target.value)} />
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+        <KeyIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+        <TextField type="password" label="Password" variant="standard" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </Box>
       <Button
         startIcon={<EmailIcon />}
         size="large"
         variant="contained"
         sx={{
-          marginTop: '20px'
+          marginTop: '40px',
+          marginBottom: '20px'
         }}
+        onClick={() => signinWithEmail()}
       >
         Sign In With Email
       </Button>
@@ -64,6 +92,9 @@ const LoginContainer = (props: Props) => {
         disabled={disabled}
         variant="contained"
         onClick={signInWithGoogle}
+        sx={{
+          marginTop: '20px'
+        }}
       >
         Sign In With Google
       </Button>

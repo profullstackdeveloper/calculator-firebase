@@ -1,15 +1,11 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, tableCellClasses } from '@mui/material';
-import React from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { auth } from '../config/firebase';
+import { HistoryDTO } from '../utils/types';
+import HistoryRow from '../components/history/HIstoryRow.component';
 
-const StyledTableRow = styled(TableRow)(() => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: '#e0e0e0',
-    },
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    }
-}));
 
 const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
@@ -24,45 +20,45 @@ const StyledTableCell = styled(TableCell)(() => ({
 const tableColumns = [
     'Date',
     'Equation',
-    'From',
-    'To',
-    'Result',
-    'Rate'
+    'Edit',
 ]
 
-const tableRows = [
-    {
-        date: '2023-01-02',
-        equation: '100 + 200 = 300',
-        from: 'usd',
-        to: 'eur',
-        result: 330,
-        rate: 1.1
-    },
-    {
-        date: '2023-01-02',
-        equation: '100 + 200 = 300',
-        from: 'usd',
-        to: 'eur',
-        result: 330,
-        rate: 1.1
-    },
-    {
-        date: '2023-01-02',
-        equation: '100 + 200 = 300',
-        from: 'usd',
-        to: 'eur',
-        result: 330,
-        rate: 1.1
+export default function History() {
+
+    const [calcHistory, setCalcHistory] = useState<HistoryDTO[]>([]);
+
+    const getHistory = async () => {
+        const idToken = await auth.currentUser?.getIdToken();
+        const result = await axios.get('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/history', {
+            headers: {
+                'Authorization': `Bearer ${idToken}`,
+            }
+        });
+        setCalcHistory(result.data)
     }
-]
 
-export default function History () {
+    const deleteHandler = async (historyId: string) => {
+        const idToken = await auth.currentUser?.getIdToken();
+        const result = await axios.delete(`http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/history/${historyId}`, {
+            headers: {
+                'Authorization': `Bearer ${idToken}`,
+            }
+        });
+
+        if(result.data.result) {
+            getHistory();
+        }
+    }
+
+    useEffect(() => {
+        getHistory();
+    }, [])
+
     return (
         <div className='w-full h-full box-border p-3 font-extrabold text-[40px]'>
             Calculation History
-            <TableContainer component={Paper} sx={{marginTop: '20px'}}>
-                <Table sx={{minWidth: 700}}>
+            <TableContainer component={Paper} sx={{ marginTop: '20px' }}>
+                <Table sx={{ minWidth: 700 }}>
                     <TableHead>
                         <TableRow>
                             {
@@ -76,26 +72,14 @@ export default function History () {
                                     )
                                 })
                             }
-                            
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            tableRows.map((row, index) => {
+                            calcHistory.map((historyItem, index) => {
                                 return (
-                                    <StyledTableRow key={index}>
-                                        {
-                                            Object.keys(row).map((key, idx) => {
-                                                return (
-                                                    <StyledTableCell key={idx}>
-                                                        {
-                                                            row[key as keyof typeof row]
-                                                        }
-                                                    </StyledTableCell>
-                                                )
-                                            })
-                                        }
-                                    </StyledTableRow>
+                                    <HistoryRow historyData={historyItem} deleteHandler={deleteHandler} key={index} />
                                 )
                             })
                         }

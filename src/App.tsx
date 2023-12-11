@@ -7,13 +7,16 @@ import Center from "./components/utils/Center";
 import PrivateRoute from "./components/utils/PrivateRoute";
 import styled from 'styled-components';
 import MasterLayout from "./components/layout/MasterLayout.component";
+import UserContextProvider from "./context/userContext";
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [displayName, setDisplayName] = useState('');
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        console.log('user detection infor: ', user);
         console.info("User detected.");
       } else {
         console.info("No user detected");
@@ -22,27 +25,30 @@ function App() {
     });
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex justify-center items-center flex-col h-screen">
         <CircularProgress />
       </div>
     );
+  }
 
   return (
     <div>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <MasterLayout>
-          <Routes>
-            {routes.map((route, index) => (
-              route.protected ?
-                <Route element={<PrivateRoute>
-                  <route.component />
-                </PrivateRoute>} path={route.path} key={index} />
-                : <Route element={<route.component />} path={route.path} key={index} />
-            ))}
-          </Routes>
-        </MasterLayout>
+        <UserContextProvider>
+          <MasterLayout>
+            <Routes>
+              {routes.map((route, index) => (
+                route.protected ?
+                  <Route element={<PrivateRoute>
+                    <route.component />
+                  </PrivateRoute>} path={route.path} key={index} />
+                  : <Route element={<route.component />} path={route.path} key={index} />
+              ))}
+            </Routes>
+          </MasterLayout>
+        </UserContextProvider>
       </BrowserRouter>
     </div>
   );

@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import axios from "axios";
+import { Firebase, auth } from "../config/firebase";
 
 interface Props { }
 
@@ -127,44 +128,50 @@ export default function Home({ }: Props) {
 
   const handleCalc = async () => {
     let result;
+    const idToken = await auth.currentUser?.getIdToken();
+    console.log(auth.currentUser?.providerData)
     switch (op) {
       case "+":
-        result = await axios.post('http://localhost:5001/calculator-49ac2/us-central1/add', {
+        result = await axios.post('http://localhost:5001/calculator-49ac2/us-central1/calculation/add', {
           first,
           second,
-          from,
-          to,
-          rate
+        }, {
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+          }
         });
         setCalcResult(result.data.result);
         break;
       case "-":
-        result = await axios.post('http://localhost:5001/calculator-49ac2/us-central1/deduction', {
+        result = await axios.post('http://localhost:5001/calculator-49ac2/us-central1/calculation/deduction', {
           first,
           second,
-          from,
-          to,
-          rate
+        }, {
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+          }
         });
         setCalcResult(result.data.result);
         break;
       case "*":
-        result = await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/multiply', {
+        result = await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/multiply', {
           first,
           second,
-          from,
-          to,
-          rate
+        }, {
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+          }
         });
         setCalcResult(result.data.result);
         break;
       case "/":
-        result = await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/divide', {
+        result = await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/divide', {
           first,
-          second,
-          from,
-          to,
-          rate
+          second
+        }, {
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+          }
         });
         setCalcResult(result.data.result);
         break;
@@ -287,7 +294,7 @@ export default function Home({ }: Props) {
             </div>
             <div className="flex flex-row mt-3">
               <Typography>Exchange Rate:&nbsp;&nbsp;</Typography>
-              <Typography>{rate}</Typography>
+              <Typography>{rate.toFixed(2)}</Typography>
             </div>
           </div>
           <div className="flex flex-row mt-3 justify-center items-center">
@@ -295,7 +302,7 @@ export default function Home({ }: Props) {
           </div>
         </div>
       </Paper>
-      <Button variant="outlined" sx={{marginTop: '16px'}}>Save</Button>
+      <Button variant="outlined" sx={{ marginTop: '16px' }}>Save</Button>
     </div>
   );
 };
