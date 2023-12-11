@@ -7,7 +7,7 @@ import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import axios from "axios";
 import { Firebase, auth } from "../config/firebase";
-import { addAPI, deductionAPI, divideAPI, multiplyAPI } from "../api";
+import { addAPI, deductionAPI, divideAPI, getCurrencyRateAPI, multiplyAPI } from "../api";
 
 interface Props { }
 
@@ -64,46 +64,51 @@ export default function Home({ }: Props) {
   const [anchorE1, setAnchorE1] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorE1);
 
+  /// @name handleClick
+  /// @author Daniel Lee
+  /// @desc Handles the operator selection button.
+  /// @param {MouseEvent<HTMLButtonElement>} event - Button Click event
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorE1(event.currentTarget);
   }
 
+  /// @name handleClose
+  /// @author Daniel Lee
+  /// @desc Closes the operator selection menu.
   const handleClose = async () => {
     setAnchorE1(null);
   }
 
+  /// @name getCurrencyRate
+  /// @author Daniel Lee
+  /// @desc Gets the currency rate for the from and to currency.
   const getCurrencyRate = async () => {
     if (from === to) {
       setRate(1);
     } else {
       try {
-        const result = await axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from.toLocaleLowerCase()}.json`);
-        setRate(result.data[from.toLocaleLowerCase()][to.toLocaleLowerCase()]);
+        const result = await getCurrencyRateAPI(from);
+        if (result) {
+          setRate(result.data[from.toLocaleLowerCase()][to.toLocaleLowerCase()]);
+        }
       } catch (err) {
         console.error(err);
       }
     }
   }
 
-  useEffect(() => {
-    getCurrencyRate();
-  }, [])
-
-  useEffect(() => {
-    getCurrencyRate();
-    const id = setInterval(() => {
-      getCurrencyRate()
-    }, 10000);
-
-    return () => {
-      clearInterval(id);
-    }
-  }, [from, to])
-
+  /// @name handleConvert
+  /// @author Daniel Lee
+  /// @desc Handles the convert based on the rate and result.
   const handleConvert = () => {
     setExchangeResult(rate * calcResult);
   }
 
+  /// @name handleCurrency
+  /// @author Daniel Lee
+  /// @desc Sets each currency type.
+  /// @param {string} currency - Currency string.
+  /// @param {boolean} isFrom - To check if it is from currency or to currency.
   const handleCurrency = (currency: string, isFrom: boolean) => {
     if (isFrom) {
       setFrom(currency)
@@ -112,13 +117,19 @@ export default function Home({ }: Props) {
     }
   }
 
+  /// @name handleSwitch
+  /// @author Daniel Lee
+  /// @desc Switch from and to currency type.
   const handleSwitch = () => {
-    const fromCurrency = from;
-    const toCurrency = to;
     setFrom(to);
     setTo(from);
   }
 
+  /// @name handleNumber
+  /// @author Daniel Lee
+  /// @desc Set the state for first and second number.
+  /// @param {(ChangeEvent<HTMLTextAreaElement | HTMLInputElement>)} e - Text field's change event
+  /// @param {boolean} isFirst - To check if it is first or second number.
   const handleNumber = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, isFirst: boolean) => {
     if (isFirst) {
       setFirst(Number(e.target.value));
@@ -127,6 +138,9 @@ export default function Home({ }: Props) {
     }
   }
 
+  /// @name handleCalc
+  /// @author Daniel Lee
+  /// @desc Handles the calculation for each operator and then change state for the result.
   const handleCalc = async () => {
     let result;
     const idToken = await auth.currentUser?.getIdToken();
@@ -151,6 +165,21 @@ export default function Home({ }: Props) {
         break;
     }
   }
+
+  useEffect(() => {
+    getCurrencyRate();
+  }, [])
+
+  useEffect(() => {
+    getCurrencyRate();
+    const id = setInterval(() => {
+      getCurrencyRate()
+    }, 10000);
+
+    return () => {
+      clearInterval(id);
+    }
+  }, [from, to])
 
   return (
     <div className="flex justify-center items-center flex-col h-full">

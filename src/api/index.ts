@@ -97,3 +97,11 @@ export const deductionAPI = async (first: number, second: number, idToken: strin
 
     return result;
 }
+
+export const getCurrencyRateAPI = async (from: string) => {
+    try {
+        return await axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${from.toLocaleLowerCase()}.json`);
+    } catch (err) {
+        console.error(err)
+    }
+}

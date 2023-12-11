@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { Navigate, Route, useNavigate } from 'react-router-dom';
+import { useEffect, ReactNode, Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase';
 
-export default function PrivateRoute({children}: {children: React.ReactNode}) {
+export default function PrivateRoute({children}: {children: ReactNode}) {
     const navigate = useNavigate()
     useEffect(() => {
         if(!auth.currentUser) {
@@ -10,10 +10,10 @@ export default function PrivateRoute({children}: {children: React.ReactNode}) {
         }
     }, [])
     return (
-        <React.Fragment>
+        <Fragment>
             {
                 children
             }
-        </React.Fragment>
+        </Fragment>
     )
 }

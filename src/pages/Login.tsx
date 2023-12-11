@@ -2,7 +2,6 @@ import { Box, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import AuthContainer from "../components/auth/LoginContainer";
-import Center from "../components/utils/Center";
 import LoginContainer from "../components/auth/LoginContainer";
 import RegisterContainer from "../components/auth/RegisterContainer";
 
@@ -36,7 +35,7 @@ const Login = ({}: Props) => {
   };
 
   return (
-    <Center>
+    <div className="flex justify-center items-center flex-row h-full">
       <Box
         display={"flex"}
         alignItems={"center"}
@@ -50,16 +49,18 @@ const Login = ({}: Props) => {
             <Tab sx={{ px: { lg: 16, xs: 6 } }} label="Register" />
           </Tabs>
         </Box>
+
         {/* login */}
         <TabPanel value={value} index={0}>
           <LoginContainer />
         </TabPanel>
+        
         {/* register */}
         <TabPanel value={value} index={1}>
           <RegisterContainer />
         </TabPanel>
       </Box>
-    </Center>
+    </div>
   );
 };
 

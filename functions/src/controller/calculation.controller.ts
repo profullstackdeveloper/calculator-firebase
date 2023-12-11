@@ -1,7 +1,11 @@
 import { Response, Request } from "express";
 import { addHistory } from "../db";
-// import { addHistory } from "../db";
 
+/// @name addController
+/// @author Daniel Lee
+/// @desc Handles multiply request
+/// @param {Request} req - Should have two fields in the request body: first, second
+/// @param {Response} res - Responds with calculation result
 export const addController = async (req: Request, res: Response) => {
     const { first, second, user }: any = req.body;
     await addHistory(user.email, {
@@ -16,6 +20,11 @@ export const addController = async (req: Request, res: Response) => {
     });
 }
 
+/// @name deductionController
+/// @author Daniel Lee
+/// @desc Handles multiply request
+/// @param {Request} req - Should have two fields in the request body: first, second
+/// @param {Response} res - Responds with calculation result
 export const deductionController = async (req: Request, res: Response) => {
     const { first, second, user }: any = req.body;
     await addHistory(user.email, {
@@ -30,6 +39,11 @@ export const deductionController = async (req: Request, res: Response) => {
     });
 }
 
+/// @name multiplyController
+/// @author Daniel Lee
+/// @desc Handles multiply request
+/// @param {Request} req - Should have two fields in the request body: first, second
+/// @param {Response} res - Responds with calculation result
 export const multiplyController = async (req: Request, res: Response) => {
     const { first, second, user }: any = req.body;
     await addHistory(user.email, {
@@ -44,6 +58,11 @@ export const multiplyController = async (req: Request, res: Response) => {
     });
 }
 
+/// @name dividerController
+/// @author Daniel Lee
+/// @desc Handles divide request
+/// @param {Request} req - Should have two fields in the request body: first, second
+/// @param {Response} res - Responds with calculation result
 export const dividerController = async (req: Request, res: Response) => {
     const { first, second, user }: any = req.body;
     await addHistory(user.email, {

@@ -19,10 +19,13 @@ const RegisterContainer = (props: Props) => {
   const [disabled, setDisabled] = useState(false);
   const [email, setEmail] = useState('');
 
-  const { firstName, lastName, setFirstName, setLastName} = useContext(UserContext);
+  const { firstName, lastName, setFirstName, setLastName } = useContext(UserContext);
   const [password, setPassword] = useState('');
 
-  const signInWithGoogle = async () => {
+  /// @name signInWithGoogle
+  /// @author Daniel Lee
+  /// @desc This function will be called when user clicks "Sign Up With Google" button.
+  const signUpWithGoogle = async () => {
     setDisabled(true);
     try {
       const result = await signInWithPopup(auth, Providers.google);
@@ -42,6 +45,9 @@ const RegisterContainer = (props: Props) => {
     }
   };
 
+  /// @name signupWithEmail
+  /// @author Daniel Lee
+  /// @desc It will be called when user clicks the "Sign Up with Email" button.
   const signupWithEmail = async () => {
     setDisabled(true);
     try {
@@ -61,16 +67,16 @@ const RegisterContainer = (props: Props) => {
   return (
     <Stack>
       <div className="flex flex-row w-full justify-between gap-3">
-        <TextField  label="First Name" variant="standard" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-        <TextField  label="Last Name" variant="standard" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+        <TextField label="First Name" variant="standard" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+        <TextField label="Last Name" variant="standard" value={lastName} onChange={(e) => setLastName(e.target.value)} />
       </div>
       <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '100%' }}>
         <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-        <TextField  className="w-full" label="Email" variant="standard" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <TextField className="w-full" label="Email" variant="standard" value={email} onChange={(e) => setEmail(e.target.value)} />
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'flex-end', width: '100%' }}>
         <KeyIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-        <TextField type="password"  className="w-full" label="Password" variant="standard" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <TextField type="password" className="w-full" label="Password" variant="standard" value={password} onChange={(e) => setPassword(e.target.value)} />
       </Box>
       <Button
         startIcon={<EmailIcon />}
@@ -90,7 +96,7 @@ const RegisterContainer = (props: Props) => {
         size="large"
         disabled={disabled}
         variant="contained"
-        onClick={signInWithGoogle}
+        onClick={signUpWithGoogle}
         sx={{
           marginTop: '20px'
         }}

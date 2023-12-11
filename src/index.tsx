@@ -1,9 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Center from './components/utils/Center';
 import { CircularProgress } from '@mui/material';
 
 const LazyApp = lazy(() => import("./App"));

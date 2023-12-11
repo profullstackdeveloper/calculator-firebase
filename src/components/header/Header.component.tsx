@@ -16,16 +16,26 @@ export default function Header() {
 
     const { firstName, lastName, setFirstName, setLastName } = useContext(UserContext);
 
+    /// @name handleClick
+    /// @author Daniel Lee
+    /// @desc This function will be called when user click Avatar Icon. Then it will shows the menu.
+    /// @param {React.MouseEvent<HTMLButtonElement>} event - Button click event.
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         if (params.pathname !== "/login") {
             setAnchorE1(event.currentTarget);
         }
     }
 
+    /// @name handleClose
+    /// @author Daniel Lee
+    /// @desc This function is for closing the menu.
     const handleClose = async () => {
         setAnchorE1(null);
     }
 
+    /// @name handleSignout
+    /// @author Daniel Lee
+    /// @desc This function will be called when user click Log out button in the menu. This will sign out the user and redirect him/she to the login page.
     const handleSignout = async () => {
         try {
             await signOut(auth);
@@ -33,7 +43,7 @@ export default function Header() {
             setAnchorE1(null);
             setFirstName('');
             setLastName('');
-            
+
         } catch (err: any) {
             console.error(err);
             setAnchorE1(null);

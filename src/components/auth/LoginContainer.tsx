@@ -22,12 +22,15 @@ const LoginContainer = (props: Props) => {
 
   const { setFirstName, setLastName } = useContext(UserContext);
 
+  /// @name signInWithGoogle
+  /// @author Daniel Lee
+  /// @desc This function will be called when user click "Sign In With Google" button
   const signInWithGoogle = async () => {
     setDisabled(true);
     try {
       const result = await signInWithPopup(auth, Providers.google);
       const user = result.user;
-      if(user.displayName) {
+      if (user.displayName) {
         setFirstName(user.displayName?.split(' ')[0]);
         setLastName(user.displayName.split(' ')[1]);
       }
@@ -39,13 +42,16 @@ const LoginContainer = (props: Props) => {
     }
   };
 
+  /// @name signinWithEmail
+  /// @author Daniel Lee
+  /// @desc This function will be called when user click "Sign In With Email" button
   const signinWithEmail = async () => {
     setDisabled(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
       const idToken = await auth.currentUser?.getIdToken();
       const userInfo: any = await getUserInfo(idToken);
-      if(userInfo.data.firstName || userInfo.data.lastName) {
+      if (userInfo.data.firstName || userInfo.data.lastName) {
         setFirstName(userInfo.data.firstName);
         setLastName(userInfo.data.lastName);
       }

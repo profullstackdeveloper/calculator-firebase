@@ -1,5 +1,4 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, tableCellClasses } from '@mui/material';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { auth } from '../config/firebase';
@@ -27,22 +26,29 @@ const tableColumns = [
 export default function History() {
 
     const [calcHistory, setCalcHistory] = useState<HistoryDTO[]>([]);
-
+    
+    /// @name getHistory
+    /// @author Daniel Lee
+    /// @desc Gets the history of the current user.
     const getHistory = async () => {
         const idToken = await auth.currentUser?.getIdToken();
         const result = await getHistoryForUser(idToken);
         setCalcHistory(result.data)
     }
 
+    /// @name deleteHandler
+    /// @author Daniel Lee
+    /// @desc Sends delete history request to remove the calculation history.
+    /// @param {string} historyId - HistoryID
     const deleteHandler = async (historyId: string) => {
         const idToken = await auth.currentUser?.getIdToken();
         const result = await removeHistoryById(historyId, idToken ?? "");
 
-        if(result.data.result) {
+        if (result.data.result) {
             getHistory();
         }
     }
-
+    
     useEffect(() => {
         getHistory();
     }, [])

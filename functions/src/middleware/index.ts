@@ -10,6 +10,12 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount as any)
 });
 
+/// @name authentication
+/// @author Daniel Lee
+/// @desc Middleware for the authentication purpose.
+/// @param {Request} req - Request header should include the idToken.
+/// @param {Response} res - If idToken is not verified, then it will returns 403 error code.
+/// @param {NextFunction} next - If idToken is verified, then it will moves to the handler function.
 export const authentication = async (req: Request, res: Response, next: NextFunction) => {
     const header = req.headers.authorization?.split(' ');
     if(header) {

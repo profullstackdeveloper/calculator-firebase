@@ -22,6 +22,12 @@ export default function Sidebar() {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
     const [fold, setFold] = useState(false);
     const navigate = useNavigate();
+
+    /// @name handleListItemClick
+    /// @author Daniel Lee
+    /// @desc This is the sidebar button handler.
+    /// @param {number} index - Index of the selected TAB.
+    /// @param {string} path - Path of the page to be navigated.
     const handleListItemClick = (
         index: number,
         path: string
@@ -30,6 +36,9 @@ export default function Sidebar() {
         navigate(path);
     }
 
+    /// @name handleFold
+    /// @author Daniel Lee
+    /// @desc This is to fold state for sidebar.
     const handleFold = () => {
         setFold(!fold);
     }
