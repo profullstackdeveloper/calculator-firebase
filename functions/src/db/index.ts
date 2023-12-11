@@ -67,8 +67,7 @@ export const addHistory = async (userEmail: string, historyData: CalcHistory) =>
 
             const calcHistoryCollectionRef = collection(userRef, 'calcHistory');
 
-            const calcData = await addDoc(calcHistoryCollectionRef, historyData);
-            console.log('calcData: ', calcData.id);
+            await addDoc(calcHistoryCollectionRef, historyData);
         })
     } else {
         throw new Error('User not found!');

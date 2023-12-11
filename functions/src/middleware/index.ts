@@ -18,7 +18,6 @@ export const authentication = async (req: Request, res: Response, next: NextFunc
             const decoded = await admin.auth().verifyIdToken(idToken);
 
             const user = await getUserByEmail((decoded as any)["email"]);
-            console.log('decoded2: ', user);
             if(user) {
                 Object.assign(req.body, {user: user})
                 next();

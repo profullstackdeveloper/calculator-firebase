@@ -4,7 +4,6 @@ import { addHistory } from "../db";
 
 export const addController = async (req: Request, res: Response) => {
     const { first, second, user }: any = req.body;
-    console.log(req.body);
     await addHistory(user.email, {
         first,
         second,
