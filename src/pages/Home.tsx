@@ -7,6 +7,7 @@ import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import axios from "axios";
 import { Firebase, auth } from "../config/firebase";
+import { addAPI, deductionAPI, divideAPI, multiplyAPI } from "../api";
 
 interface Props { }
 
@@ -132,47 +133,19 @@ export default function Home({ }: Props) {
     console.log(auth.currentUser?.providerData)
     switch (op) {
       case "+":
-        result = await axios.post('http://localhost:5001/calculator-49ac2/us-central1/calculation/add', {
-          first,
-          second,
-        }, {
-          headers: {
-            'Authorization': `Bearer ${idToken}`,
-          }
-        });
+        result = await addAPI(first, second, idToken ?? "");
         setCalcResult(result.data.result);
         break;
       case "-":
-        result = await axios.post('http://localhost:5001/calculator-49ac2/us-central1/calculation/deduction', {
-          first,
-          second,
-        }, {
-          headers: {
-            'Authorization': `Bearer ${idToken}`,
-          }
-        });
+        result = await deductionAPI(first, second, idToken ?? "");
         setCalcResult(result.data.result);
         break;
       case "*":
-        result = await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/multiply', {
-          first,
-          second,
-        }, {
-          headers: {
-            'Authorization': `Bearer ${idToken}`,
-          }
-        });
+        result = await multiplyAPI(first, second, idToken ?? "");
         setCalcResult(result.data.result);
         break;
       case "/":
-        result = await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/divide', {
-          first,
-          second
-        }, {
-          headers: {
-            'Authorization': `Bearer ${idToken}`,
-          }
-        });
+        result = await divideAPI(first, second, idToken ?? "");
         setCalcResult(result.data.result);
         break;
       default:

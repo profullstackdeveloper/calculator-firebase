@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { auth } from '../config/firebase';
 import { HistoryDTO } from '../utils/types';
 import HistoryRow from '../components/history/HIstoryRow.component';
+import { getHistoryForUser, removeHistoryById } from '../api';
 
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -29,21 +30,13 @@ export default function History() {
 
     const getHistory = async () => {
         const idToken = await auth.currentUser?.getIdToken();
-        const result = await axios.get('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/history', {
-            headers: {
-                'Authorization': `Bearer ${idToken}`,
-            }
-        });
+        const result = await getHistoryForUser(idToken);
         setCalcHistory(result.data)
     }
 
     const deleteHandler = async (historyId: string) => {
         const idToken = await auth.currentUser?.getIdToken();
-        const result = await axios.delete(`http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/history/${historyId}`, {
-            headers: {
-                'Authorization': `Bearer ${idToken}`,
-            }
-        });
+        const result = await removeHistoryById(historyId, idToken ?? "");
 
         if(result.data.result) {
             getHistory();

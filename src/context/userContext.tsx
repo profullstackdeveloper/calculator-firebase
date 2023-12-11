@@ -18,7 +18,6 @@ export default function UserContextProvider({ children }: { children: ReactNode 
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
             if (user?.displayName) {
-                console.log('displayName is dtected: ')
                 setFirstName(user.displayName?.split(' ')[0]);
                 setLastName(user.displayName.split(' ')[1]);
             } else {

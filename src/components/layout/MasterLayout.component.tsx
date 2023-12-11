@@ -8,7 +8,6 @@ import { useLocation, useParams } from 'react-router-dom';
 export default function MasterLayout({ children }: { children: React.ReactNode }) {
 
     const params = useLocation();
-    console.log('params: ', params.pathname);
 
     return (
         <MasterLayoutContainer>

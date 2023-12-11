@@ -9,6 +9,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import KeyIcon from '@mui/icons-material/Key';
 import axios from "axios";
 import { UserContext } from "../../context/userContext";
+import { getUserInfo } from "../../api";
 
 interface Props { }
 
@@ -46,11 +47,7 @@ const LoginContainer = (props: Props) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       const idToken = await auth.currentUser?.getIdToken();
-      const userInfo = await axios.get('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/signin', {
-        headers: {
-          'Authorization': `Bearer ${idToken}`,
-        }
-      })
+      const userInfo: any = await getUserInfo(idToken);
       console.log('credential is ', userInfo);
       if(userInfo.data.firstName || userInfo.data.lastName) {
         setFirstName(userInfo.data.firstName);

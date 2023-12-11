@@ -16,7 +16,6 @@ function App() {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log('user detection infor: ', user);
         console.info("User detected.");
       } else {
         console.info("No user detected");

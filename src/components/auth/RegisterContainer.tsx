@@ -9,6 +9,7 @@ import { AccountCircle } from "@mui/icons-material";
 import KeyIcon from '@mui/icons-material/Key';
 import axios from "axios";
 import { UserContext } from "../../context/userContext";
+import { registerUser } from "../../api";
 
 interface Props { }
 
@@ -33,11 +34,7 @@ const RegisterContainer = (props: Props) => {
       const lastName = user.displayName?.split(' ')[1];
       console.log('token is ', token);
 
-      await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/signup', {
-        email: user.email,
-        firstName,
-        lastName
-      });
+      await registerUser(user.email ?? "", firstName ?? "", lastName ?? "");
 
       setDisabled(false);
       console.info('TODO: navigate to authenticated screen');
@@ -54,11 +51,7 @@ const RegisterContainer = (props: Props) => {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       const credential = result.user;
       console.log('user credential is ', credential);
-      await axios.post('http://127.0.0.1:5001/calculator-49ac2/us-central1/calculation/signup', {
-        email: email,
-        firstName,
-        lastName
-      });
+      await registerUser(email ?? "", firstName ?? "", lastName ?? "");
       setDisabled(false);
       sendEmailVerification(credential)
       navigate("/")
