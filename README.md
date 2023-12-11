@@ -13,16 +13,15 @@
 <li>
 <a href="#getting-started">Getting Started</a>
 <ul>
+<li><a href="#environment">Environment</a></li>
 <li><a href="#prerequisites">Prerequisites</a></li>
 <li><a href="#installation">Installation</a></li>
 </ul>
 </li>
-<li><a href="#usag">Usage</a></li>
-<li><a href="#roadmap">Roadmap</a></li>
-<li><a href="#contributing">Contributing</a></li>
-<li><a href="#license">License</a></li>
-<li><a href="#contact">Contact</a></li>
-<li><a href="#acknowledgments">Acknowledgments</a></li>
+<li><a href="#usage">Usage</a></li>
+<ul>
+<li><a href="#script-details">Script details</a></li>
+</ul>
 </ul>
 </li>
 </ol>
@@ -35,83 +34,102 @@ And convert the result to the target currency with the latest exchange rate.
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
 
-### Built With
+## Built With
 
 
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 
-* [![React][React.js]][React-url]
-
-* [![Firebase][Firebase]][Firebase-url]
-
-* [![Angular][Angular.io]][Angular-url]
-
+* Node.js
+* React
+* Firebase
+* Firestore
+* Typescript
+* Material UI
+* Styled-components
+* Tailwind CSS
 
 <p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
+## Getting Started
 
-<!-- MARKDOWN LINKS & IMAGES -->
+To install and run the project successfully, please follow the instructions.
 
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+### Environment
+```
+Node version >= 18.0
+Firebase Tools(firebase-tools) version 13.0.0
+```
 
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+To install Firebase Tools, use this command:
+```bash
+npm install -g firebase-tools
+```
 
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+```
+FYI:
 
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+If it is required to test on local, then need to be sure that ``java`` is already installed on it.
+Firebase emulator is using Java to run it.
+```
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+### Prerequisites
 
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+This project is using ``Firebase`` and ``Firestore``.
+Before using this, please follow these steps:
+* Project is already added in the cloud console.
+* App is registered in the cloud project.
+* There are two signin methods: Email/Password, Google. Please be sure that these two providers are enabled.
+* In the Firebase, create a callection which name is ``users``
 
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+For more information please check this [link]('https://firebase.google.com/docs/web/setup').
 
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+### Installation
 
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+```bash
+git clone https://github.com/profullstackdeveloper/calculator-firebase.git
 
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+cd calculator-firebase
 
-[linkedin-url]: https://linkedin.com/in/othneildrew
+npm install
+```
+This step will finish the installation for the Frontend UI.
 
-[product-scrages/screenshot.png
+To runn the cloud functions on local, then:
+```bash
+cd functions
 
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+npm install
+```
 
-[Next-url]: https://nextjs.org/
+After finishing installation of required modules, then please be sure that env files are already implemented correctly.
 
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+<p align="right">(<a href="#readme-top">Back to top</a>)</p>
 
-[React-url]: https://reactjs.org/
+## Usage
 
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+### Script Details
 
-[Vue-url]: https://vuejs.org/
+At first, please run the cloud functions at first. (for local test case)
 
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+```bash
+cd functions
+npm run serve
+```
 
-[Angular-url]: https://angular.io/
+And then, UI can be run with the following command.
+```bash
+cd ..
+npm run start
+```
 
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-
-[Svelte-url]: https://svelte.dev/
-
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-
-[Laravel-url]: https://laravel.com
-
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-
-[Bootstrap-url]: https://getbootstrap.com
-
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-
-[JQuery-url]: https://jquery.com ]
-
-[Firebase]: https://console.firebase.google.com
-[Firebase-url]: https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_28dp.png
+To deploy the cloud functions, use the following command.
+```bash
+cd functions
+npm run build
+npm run deploy
+```
