@@ -60,10 +60,6 @@ And convert the result to the target currency with the latest exchange rate.
 ### Built With
 
 
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-
 * <b>Node.js</b>
 * <b>React</b>
 * <b>Firebase</b>
